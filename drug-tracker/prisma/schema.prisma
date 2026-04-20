@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String?
+  role      Role     @default(USER)
+  age       Int?
+  gender    Gender?
+  createdAt DateTime @default(now())
+
+  drugs         Drug[]
+  feedbacks     Feedback[]
+  prescriptions Prescription[]
+  usages        DrugUsage[]
+}
+
+model Drug {
+  id             String   @id @default(uuid())
+  name           String
+  description    String
+  usage          String
+  bodyPart       String
+  category       String
+  ageGroup       String
+  gender         Gender?
+  estimatedPrice Float?
+  imageUrl       String?
+  createdAt      DateTime @default(now())
+
+  createdById String
+  createdBy   User @relation(fields: [createdById], references: [id])
+
+  feedbacks Feedback[]
+  usages    DrugUsage[]
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  comment   String
+  rating    Int?
+  createdAt DateTime @default(now())
+
+  userId String
+  drugId String
+
+  user User @relation(fields: [userId], references: [id])
+  drug Drug @relation(fields: [drugId], references: [id])
+}
+
+model Prescription {
+  id        String   @id @default(uuid())
+  imageUrl  String?
+  note      String?
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model DrugUsage {
+  id        String   @id @default(uuid())
+  dosage    String
+  time      String
+  createdAt DateTime @default(now())
+
+  userId String
+  drugId String
+
+  user User @relation(fields: [userId], references: [id])
+  drug Drug @relation(fields: [drugId], references: [id])
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  PHARMACIST
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
