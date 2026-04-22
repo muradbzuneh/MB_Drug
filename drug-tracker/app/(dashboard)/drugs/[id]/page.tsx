@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import ReminderForm from "./ReminderForm";
+import FeedbackForm from "./FeedbackForm";
 
 type DrugDetailPageProps = {
   params: {
@@ -12,6 +13,20 @@ type DrugDetailPageProps = {
 export default async function DrugDetail({ params }: DrugDetailPageProps) {
   const drug = await prisma.drug.findUnique({
     where: { id: params.id },
+    include: {
+      feedbacks: {
+        include: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   });
 
   if (!drug) {
@@ -73,6 +88,25 @@ export default async function DrugDetail({ params }: DrugDetailPageProps) {
         </div>
         {/* Reminder Section */}
         <ReminderForm drugId={drug.id} />
+        {/* Feedback Form */}
+        <FeedbackForm drugId={drug.id} />
+
+        {/* Feedback List */}
+        <div className="mt-6">
+          <h2 className="text-lg font-semibold">User Feedback</h2>
+
+          {drug.feedbacks.length === 0 ? (
+            <p className="mt-2 text-sm text-emerald-700">No feedback yet.</p>
+          ) : (
+            drug.feedbacks.map((f) => (
+              <div key={f.id} className="mt-2 rounded border border-emerald-200 p-3">
+                <p className="font-semibold text-emerald-900">{f.user.name ?? "Anonymous user"}</p>
+                <p className="text-sm text-slate-700">{f.comment}</p>
+                <p className="text-sm text-emerald-800">⭐ {f.rating ?? "N/A"}</p>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </main>
   );
