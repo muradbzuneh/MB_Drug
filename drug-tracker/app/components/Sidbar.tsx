@@ -13,110 +13,81 @@ const mainNav = [
   { href: "/contact", label: "Contact", icon: "📞" },
 ];
 
-const extraNav = [
-  { href: "/health-tips", label: "Health Tips", icon: "🧠" },
-];
-
-const userNav = [
-  { href: "/profile", label: "Profile", icon: "👤" },
-];
-
+const extraNav = [{ href: "/health-tips", label: "Health Tips", icon: "🧠" }];
+const userNav = [{ href: "/profile", label: "Profile", icon: "👤" }];
 const pharmacistNav = [
   { href: "/pharmacist/prescriptions", label: "Prescriptions", icon: "🔬" },
   { href: "/drugs/new", label: "Add Drug", icon: "➕" },
 ];
+const adminNav = [{ href: "/admin", label: "Admin Panel", icon: "⚙️" }];
 
-const adminNav = [
-  { href: "/admin", label: "Admin Panel", icon: "⚙️" },
-];
+type NavEntry = { href: string; label: string; icon: string };
 
-function NavItem({ href, label, icon }: { href: string; label: string; icon: string }) {
-  const pathname = usePathname();
-  const isActive = pathname === href || pathname.startsWith(`${href}/`);
-
+function NavGroup({
+  items,
+  label,
+  pathname,
+}: {
+  items: NavEntry[];
+  label: string;
+  pathname: string;
+}) {
   return (
-    <Link
-      href={href}
-      className={`flex items-center gap-2.5 rounded-lg border px-3 py-2 text-sm transition ${
-        isActive
-          ? "border-emerald-500/30 bg-emerald-500/15 text-emerald-300"
-          : "border-transparent text-slate-300 hover:border-slate-700 hover:bg-slate-800/50 hover:text-white"
-      }`}
-    >
-      <span className="w-5 text-center text-base leading-none">{icon}</span>
-      <span>{label}</span>
-    </Link>
-  );
-}
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <p className="mt-5 mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">
-      {label}
-    </p>
+    <>
+      <p className="mt-5 mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+        {label}
+      </p>
+      <div className="grid gap-0.5">
+        {items.map(({ href, label: name, icon }) => {
+          const isActive = pathname === href || pathname.startsWith(`${href}/`);
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={`flex items-center gap-2.5 rounded-lg border px-3 py-2 text-sm transition ${
+                isActive
+                  ? "border-emerald-500/30 bg-emerald-500/15 text-emerald-300"
+                  : "border-transparent text-slate-300 hover:border-slate-700 hover:bg-slate-800/50 hover:text-white"
+              }`}
+            >
+              <span className="w-5 text-center text-base leading-none">{icon}</span>
+              <span>{name}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </>
   );
 }
 
 export default function Sidbar() {
+  const pathname = usePathname();
   const { data: session } = useSession();
   const role = session?.user?.role;
 
   return (
-    <aside className="w-full border-b border-[#1a2b49] bg-[#0b1630] px-4 py-5 text-slate-200 md:min-h-screen md:w-64 md:border-b-0 md:border-r md:px-5 md:py-7 flex flex-col">
+    <aside className="w-full shrink-0 border-b border-[#1a2b49] bg-[#0b1630] px-4 py-5 text-slate-200 md:min-h-screen md:w-60 md:border-b-0 md:border-r md:px-5 md:py-7 flex flex-col">
       {/* Logo */}
       <div className="flex items-center gap-3">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500 text-sm font-bold text-white">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500 text-sm font-bold text-white">
           ✚
         </div>
         <div>
-          <h1 className="text-xl font-bold text-white">DrugTrack</h1>
-          <p className="text-xs text-slate-400">Health dashboard</p>
+          <p className="text-lg font-bold leading-tight text-white">DrugTrack</p>
+          <p className="text-[11px] text-slate-400">Health dashboard</p>
         </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="mt-6 flex-1 overflow-y-auto">
-        <SectionLabel label="Main" />
-        <div className="grid gap-0.5">
-          {mainNav.map((item) => (
-            <NavItem key={item.href} {...item} />
-          ))}
-        </div>
-
-        <SectionLabel label="Extra" />
-        <div className="grid gap-0.5">
-          {extraNav.map((item) => (
-            <NavItem key={item.href} {...item} />
-          ))}
-        </div>
-
-        <SectionLabel label="Account" />
-        <div className="grid gap-0.5">
-          {userNav.map((item) => (
-            <NavItem key={item.href} {...item} />
-          ))}
-        </div>
-
+      {/* Nav */}
+      <nav className="mt-5 flex-1 overflow-y-auto">
+        <NavGroup items={mainNav} label="Main" pathname={pathname} />
+        <NavGroup items={extraNav} label="Extra" pathname={pathname} />
+        <NavGroup items={userNav} label="Account" pathname={pathname} />
         {role === "PHARMACIST" && (
-          <>
-            <SectionLabel label="Pharmacist" />
-            <div className="grid gap-0.5">
-              {pharmacistNav.map((item) => (
-                <NavItem key={item.href} {...item} />
-              ))}
-            </div>
-          </>
+          <NavGroup items={pharmacistNav} label="Pharmacist" pathname={pathname} />
         )}
-
         {role === "ADMIN" && (
-          <>
-            <SectionLabel label="Admin" />
-            <div className="grid gap-0.5">
-              {adminNav.map((item) => (
-                <NavItem key={item.href} {...item} />
-              ))}
-            </div>
-          </>
+          <NavGroup items={adminNav} label="Admin" pathname={pathname} />
         )}
       </nav>
 
