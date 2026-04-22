@@ -5,14 +5,13 @@ import ReminderForm from "./ReminderForm";
 import FeedbackForm from "./FeedbackForm";
 
 type DrugDetailPageProps = {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 };
 
 export default async function DrugDetail({ params }: DrugDetailPageProps) {
+  const { id } = await params;
   const drug = await prisma.drug.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       feedbacks: {
         include: {
@@ -86,7 +85,6 @@ export default async function DrugDetail({ params }: DrugDetailPageProps) {
             </p>
           </div>
         </div>
-        {/* Reminder Section */}
         <ReminderForm drugId={drug.id} />
         {/* Feedback Form */}
         <FeedbackForm drugId={drug.id} />

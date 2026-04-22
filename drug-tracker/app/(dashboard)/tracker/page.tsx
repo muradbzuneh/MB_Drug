@@ -1,16 +1,19 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import ReminderAlert from "@/app/dashboard/tracker/ReminderAlert";
 
 export default async function TrackerPage() {
   const session = await getServerSession();
 
+  if (!session?.user?.id) {
+    redirect("/login");
+  }
+
   const usages = await prisma.drugUsage.findMany({
-    where: {
-      userId: session?.user.id,
-    },
-    include: {
-      drug: true,
-    },
+    where: { userId: session.user.id },
+    include: { drug: true },
+    orderBy: { time: "asc" },
   });
 
   return (
@@ -35,6 +38,8 @@ export default async function TrackerPage() {
           ))}
         </div>
       )}
+
+      <ReminderAlert usages={usages} />
     </section>
   );
 }
