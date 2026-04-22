@@ -68,7 +68,7 @@ export default function AddDrug() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
+    <main className="min-h-screen bg-linear-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
       <div className="mx-auto w-full max-w-2xl">
         <form
           onSubmit={handleSubmit}

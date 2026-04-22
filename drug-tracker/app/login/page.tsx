@@ -23,24 +23,39 @@ export default function LoginPage() {
 
     setIsSubmitting(true);
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
 
-    if (result?.error) {
+      if (res?.ok) {
+        const session = await fetch("/api/auth/session").then((r) => r.json());
+        const role = session?.user?.role;
+
+        if (role === "ADMIN") {
+          router.push("/admin");
+        } else if (role === "PHARMACIST") {
+          router.push("/drugs/new");
+        } else {
+          router.push("/home");
+        }
+
+        router.refresh();
+        return;
+      }
+
       setError("Invalid email or password.");
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
       setIsSubmitting(false);
-      return;
     }
-
-    router.push("/");
-    router.refresh();
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
+    <main className="min-h-screen bg-linear-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
       <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center justify-center">
         <form
           onSubmit={handleLogin}
@@ -55,12 +70,14 @@ export default function LoginPage() {
           <div className="space-y-4">
             <input
               type="email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email address"
               className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
             />
             <input
               type="password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
+    <main className="min-h-screen bg-linear-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
       <div className="mx-auto flex min-h-[80vh] w-full max-w-4xl items-center justify-center">
         <section className="w-full rounded-2xl border border-emerald-100 bg-white/90 p-8 shadow-xl backdrop-blur md:p-12">
           <div className="space-y-4 text-center md:text-left">

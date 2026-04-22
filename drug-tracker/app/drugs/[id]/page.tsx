@@ -16,7 +16,7 @@ export default async function DrugDetail({ params }: DrugDetailPageProps) {
 
   if (!drug) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
+      <main className="min-h-screen bg-linear-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
         <div className="mx-auto w-full max-w-3xl rounded-2xl border border-emerald-100 bg-white/90 p-8 shadow-xl backdrop-blur">
           <h1 className="text-2xl font-bold text-emerald-900">Drug not found</h1>
           <p className="mt-2 text-sm text-emerald-700">The requested medicine does not exist.</p>
@@ -29,7 +29,7 @@ export default async function DrugDetail({ params }: DrugDetailPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
+    <main className="min-h-screen bg-linear-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
       <div className="mx-auto w-full max-w-4xl space-y-6 rounded-2xl border border-emerald-100 bg-white/90 p-8 shadow-xl backdrop-blur">
         <div className="flex items-start justify-between gap-4">
           <div>

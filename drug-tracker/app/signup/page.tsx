@@ -49,7 +49,7 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
+    <main className="min-h-screen bg-linear-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
       <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center justify-center">
         <form
           onSubmit={handleSubmit}

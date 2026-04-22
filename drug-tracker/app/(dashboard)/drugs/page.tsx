@@ -65,7 +65,7 @@ export default function DrugsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
+    <main className="min-h-screen bg-linear-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
       <div className="mx-auto w-full max-w-6xl space-y-6">
         <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-emerald-100 bg-white/90 p-6 shadow-xl backdrop-blur sm:flex-row sm:items-center">
           <div>
