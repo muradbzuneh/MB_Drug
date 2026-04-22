@@ -10,7 +10,6 @@ export default async function PrescriptionsPage() {
   if (session?.user?.role !== "PHARMACIST" && session?.user?.role !== "ADMIN") {
     redirect("/home");
   }
-
   const prescriptions = await prisma.prescription.findMany({
     include: {
       user: { select: { name: true, email: true } },

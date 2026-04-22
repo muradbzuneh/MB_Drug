@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import ReminderAlert from "@/app/dashboard/tracker/ReminderAlert";
+import ReminderAlert from "./ReminderAlert";
 
 export default async function TrackerPage() {
   const session = await getServerSession();
