@@ -1,17 +1,18 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
+import ReminderAlert from "./ReminderAlert";
 
 export default async function TrackerPage() {
   const session = await getServerSession();
 
   const usages = await prisma.drugUsage.findMany({
-    where: {
-      userId: session?.user.id,
-    },
-    include: {
-      drug: true,
-    },
-  });
+  where: {
+    userId: session?.user.id,
+  },
+  include: {
+    drug: true,
+  },
+});
 
   return (
     <section className="mx-auto w-full max-w-4xl space-y-6">
@@ -35,6 +36,8 @@ export default async function TrackerPage() {
           ))}
         </div>
       )}
+      <ReminderAlert usages={usages} />
     </section>
+    
   );
 }
