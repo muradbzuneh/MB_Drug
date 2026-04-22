@@ -44,7 +44,9 @@ export default function ReminderForm({ drugId }: { drugId: string }) {
 
   return (
     <div className="rounded-xl border border-emerald-100 bg-white/90 p-4 shadow">
-      <h2 className="text-lg font-semibold text-emerald-900">Set Reminder</h2>
+      <h2 className="text-lg font-semibold text-emerald-900">
+        Set Reminder
+      </h2>
 
       <div className="mt-3 space-y-3">
         <input

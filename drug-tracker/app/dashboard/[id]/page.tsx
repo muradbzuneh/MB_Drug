@@ -71,7 +71,7 @@ export default async function DrugDetail({ params }: DrugDetailPageProps) {
             </p>
           </div>
         </div>
-
+        {/* Reminder Section */}
         <ReminderForm drugId={drug.id} />
       </div>
     </main>

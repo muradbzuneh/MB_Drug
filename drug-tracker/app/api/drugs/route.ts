@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Gender } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 
@@ -29,7 +30,33 @@ export async function POST(req: Request) {
   return NextResponse.json(drug);
 }
 
-export async function GET() {
-  const drugs = await prisma.drug.findMany();
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+
+  const search = searchParams.get("search");
+  const bodyPart = searchParams.get("bodyPart");
+  const category = searchParams.get("category");
+  const gender = searchParams.get("gender");
+  const genderFilter =
+    gender === Gender.MALE || gender === Gender.FEMALE ? gender : undefined;
+
+  const drugs = await prisma.drug.findMany({
+    where: {
+      AND: [
+        search
+          ? {
+              name: {
+                contains: search,
+                mode: "insensitive",
+              },
+            }
+          : {},
+        bodyPart ? { bodyPart } : {},
+        category ? { category } : {},
+        genderFilter ? { gender: genderFilter } : {},
+      ],
+    },
+  });
+
   return NextResponse.json(drugs);
 }

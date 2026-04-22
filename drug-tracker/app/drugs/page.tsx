@@ -14,16 +14,55 @@ type Drug = {
 
 export default function DrugsPage() {
   const [drugs, setDrugs] = useState<Drug[]>([]);
+  const [search, setSearch] = useState("");
+  const [bodyPart, setBodyPart] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const fetchDrugs = async () => {
+    try {
+      const query = new URLSearchParams({
+        search,
+        bodyPart,
+      });
+
+      const res = await fetch(`/api/drugs?${query.toString()}`);
+      if (!res.ok) {
+        throw new Error("Failed to load drugs.");
+      }
+
+      const data = (await res.json()) as Drug[];
+      setDrugs(data);
+    } catch {
+      setError("Failed to load drugs.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetch("/api/drugs")
-      .then((res) => res.json())
-      .then((data) => setDrugs(data))
+    const query = new URLSearchParams({
+      search: "",
+      bodyPart: "",
+    });
+
+    fetch(`/api/drugs?${query.toString()}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to load drugs.");
+        }
+        return res.json();
+      })
+      .then((data: Drug[]) => setDrugs(data))
       .catch(() => setError("Failed to load drugs."))
       .finally(() => setLoading(false));
   }, []);
+
+  const handleFilter = async () => {
+    setLoading(true);
+    setError("");
+    await fetchDrugs();
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
@@ -39,6 +78,36 @@ export default function DrugsPage() {
           >
             Add new drug
           </Link>
+        </div>
+
+        <div className="rounded-2xl border border-emerald-100 bg-white/90 p-4 shadow-md">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center">
+            <input
+              placeholder="Search drug..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+            />
+
+            <select
+              value={bodyPart}
+              onChange={(e) => setBodyPart(e.target.value)}
+              className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 md:max-w-52"
+            >
+              <option value="">All Body Parts</option>
+              <option value="Head">Head</option>
+              <option value="Stomach">Stomach</option>
+              <option value="Chest">Chest</option>
+              <option value="Skin">Skin</option>
+            </select>
+
+            <button
+              onClick={handleFilter}
+              className="rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 md:px-5"
+            >
+              🔍 Filter
+            </button>
+          </div>
         </div>
 
         {loading ? <p className="text-sm text-emerald-700">Loading drugs...</p> : null}
