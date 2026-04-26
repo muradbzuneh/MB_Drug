@@ -69,7 +69,7 @@ function NavGroup({
 }) {
   return (
     <>
-      <p className="mt-5 mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+      <p className="mt-5 mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-widest text-black-500">
         {label}
       </p>
 
@@ -107,17 +107,17 @@ function NavGroup({
 /* ================= SIDEBAR ================= */
 
 interface SidebarProps {
-  open: boolean;
-  onClose: () => void;
+  open?: boolean;
+  onClose?: () => void;
 }
 
-export default function Sidebar({ open, onClose }: SidebarProps) {
+export default function Sidebar({ open = false, onClose = () => {} }: SidebarProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const role = session?.user?.role;
 
   const sidebarContent = (
-    <aside className="flex h-full w-64 flex-col bg-[#0b1630] px-5 py-7 text-slate-200">
+    <aside className="flex h-full w-64 flex-col bg-[#eff3fc] px-5 py-7 text-slate-200">
       
       {/* Logo */}
       <div className="flex items-center gap-3">
@@ -127,13 +127,14 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             alt="Logo"
             width={40}
             height={40}
-            className="object-cover"
+            className="object-cover border-r-green-600"
+            
           />
         </div>
 
         <div>
-          <p className="text-lg font-bold text-white">DrugTrack</p>
-          <p className="text-[11px] text-slate-400">Health dashboard</p>
+          <p className="text-lg font-bold text-emerald-600">DrugTrack</p>
+          <p className="text-[11px] text-slate-800">Health dashboard</p>
         </div>
       </div>
 

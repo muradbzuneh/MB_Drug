@@ -15,8 +15,8 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6 shadow-xl">
-        <h1 className="text-2xl font-bold text-white">
+      <div className="rounded-2xl border border-[#1b345f] bg-[#e5e9f0] p-6 shadow-xl">
+        <h1 className="text-2xl font-bold text-gray-600">
           Welcome back{session?.user?.name ? `, ${session.user.name}` : ""} 👋
         </h1>
         <p className="mt-1 text-sm text-slate-400">Here&apos;s your health overview.</p>
