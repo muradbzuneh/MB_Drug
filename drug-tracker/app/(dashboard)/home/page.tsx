@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function HomePage() {
   const session = await getServerSession(authOptions);
@@ -17,35 +18,54 @@ export default async function HomePage() {
     <div className="space-y-6">
       <div className="rounded-2xl border border-[#1b345f] bg-[#e5e9f0] p-6 shadow-xl">
         <h1 className="text-2xl font-bold text-gray-600">
-          Welcome back{session?.user?.name ? `, ${session.user.name}` : ""} 👋
+          Welcome back{session?.user?.name ? `, ${session.user.name}` : ""} 
         </h1>
         <p className="mt-1 text-sm text-slate-400">Here&apos;s your health overview.</p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-1">
         <Link
           href="/drugs"
-          className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6 shadow-md transition hover:border-emerald-500/40 hover:bg-[#0f2347]"
+          className="rounded-2xl border border-[#1b345f] bg-[#d0d4db] p-6 shadow-md transition
+           hover:border-emerald-500/40 hover:bg-[#0f2347]"
         >
           <p className="text-3xl font-bold text-emerald-400">{drugCount}</p>
-          <h2 className="mt-1 font-semibold text-white">💊 Drugs</h2>
+          <Image
+                      src="/drug.jpg"
+                      alt="Logo"
+                      width={300}
+                      height={100}
+                      className="object-cover border-r-green-600" />
+          <h2 className="mt-1 font-semibold text-white"> Drugs</h2>
           <p className="text-sm text-slate-400">Browse available medicines</p>
         </Link>
 
         <Link
           href="/tracker"
-          className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6 shadow-md transition hover:border-emerald-500/40 hover:bg-[#0f2347]"
+          className="rounded-2xl border border-[#1b345f] bg-[#c1c6cf] p-6 shadow-md transition hover:border-emerald-500/40 hover:bg-[#0f2347]"
         >
           <p className="text-3xl font-bold text-emerald-400">{reminderCount}</p>
-          <h2 className="mt-1 font-semibold text-white">⏰ Reminders</h2>
+          <Image
+                      src="/Riminder.jpg"
+                      alt="Logo"
+                      width={300}
+                      height={100}
+                      className="object-cover border-r-green-600"/>
+          <h2 className="mt-1 font-semibold text-white"> Reminders</h2>
           <p className="text-sm text-slate-400">Your active dosage schedule</p>
         </Link>
 
         <Link
           href="/prescription"
-          className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6 shadow-md transition hover:border-emerald-500/40 hover:bg-[#0f2347]"
+          className="rounded-2xl border border-[#1b345f] bg-[#c0c4ce] p-6 shadow-md transition hover:border-emerald-500/40 hover:bg-[#0f2347]"
         >
-          <p className="text-3xl font-bold text-emerald-400">📤</p>
+    
+          <Image
+                      src="/Prescriptions.jpg"
+                      alt="Logo"
+                      width={300}
+                      height={100}
+                      className="object-cover border-r-green-600"/>
           <h2 className="mt-1 font-semibold text-white">Prescription</h2>
           <p className="text-sm text-slate-400">Send prescription to pharmacist</p>
         </Link>
