@@ -55,11 +55,11 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-linear-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
+    <main className=" min-h-screen bg-[url('/background.jpg')] bg-cover bg-no-repeat bg-center px-4 py-10">
       <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center justify-center">
         <form
           onSubmit={handleLogin}
-          className="w-full space-y-5 rounded-2xl border border-emerald-100 bg-white/90 p-8 shadow-xl backdrop-blur"
+          className="w-full space-y-5 rounded-2xl border border-emerald-400 bg-transparent/300 p-8 shadow-xl backdrop-blur"
         >
           <div className="space-y-2 text-center">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-2xl">

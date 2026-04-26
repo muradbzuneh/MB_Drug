@@ -49,11 +49,11 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="min-h-screen bg-linear-to-br from-emerald-50 via-teal-50 to-white px-4 py-10">
+    <main className="min-h-screen bg-[url('/background.jpg')] bg-cover bg-no-repeat bg-center px-4 py-10">
       <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center justify-center">
         <form
           onSubmit={handleSubmit}
-          className="w-full space-y-5 rounded-2xl border border-emerald-100 bg-white/90 p-8 shadow-xl backdrop-blur"
+          className="w-full space-y-5 rounded-2xl border border-emerald-500 bg-transparent/90 p-8 shadow-xl backdrop-blur"
         >
           <div className="space-y-2 text-center">
             <div className="mx-auto h-10 w-10 rounded-full bg-emerald-100" />
