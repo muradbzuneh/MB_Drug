@@ -31,13 +31,13 @@ A full-stack web application for managing drug information, tracking medication 
 
 🧠 Core Functionalities
 
- 🔐 Authentication & Authorization (role-based)
- 💊 Drug management system (CRUD)
- 🔍 Search & filtering
-⏰ Reminder / tracking system
-📤 Prescription upload (image)
-⭐ Feedback system
-📊 Dashboard UI with sidebar
+* 🔐 Authentication & Authorization (role-based)
+*💊 Drug management system (CRUD)
+* 🔍 Search & filtering
+*⏰ Reminder / tracking system
+*📤 Prescription upload (image)
+*⭐ Feedback system
+* 📊 Dashboard UI with sidebar
 
 ---
 
