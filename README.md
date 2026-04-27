@@ -34,9 +34,9 @@ A full-stack web application for managing drug information, tracking medication 
 * 🔐 Authentication & Authorization (role-based)
 *💊 Drug management system (CRUD)
 * 🔍 Search & filtering
-*⏰ Reminder / tracking system
-*📤 Prescription upload (image)
-*⭐ Feedback system
+* ⏰ Reminder / tracking system
+* 📤 Prescription upload (image)
+* ⭐ Feedback system
 * 📊 Dashboard UI with sidebar
 
 ---
