@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { BellRing, X } from "lucide-react";
 
 type ReminderUsage = {
   id: string;
@@ -52,7 +53,7 @@ export default function ReminderAlert({ usages }: { usages: ReminderUsage[] }) {
           key={`${u.id}-alert`}
           className="flex items-start gap-3 rounded-xl border border-emerald-400 bg-emerald-900 px-4 py-3 shadow-xl text-white max-w-xs"
         >
-          <span className="text-xl">⏰</span>
+          <BellRing className="h-5 w-5 shrink-0 text-emerald-200" />
           <div className="flex-1">
             <p className="font-semibold text-emerald-200">Time to take your medicine</p>
             <p className="text-sm text-emerald-100">{u.drug.name} — {u.dosage}</p>
@@ -64,7 +65,7 @@ export default function ReminderAlert({ usages }: { usages: ReminderUsage[] }) {
             className="ml-2 text-emerald-300 hover:text-white text-lg leading-none"
             aria-label="Dismiss"
           >
-            ×
+            <X className="h-4 w-4" />
           </button>
         </div>
       ))}

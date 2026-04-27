@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Link from "next/link";
-import Image from "next/image";
+import { BellRing, BookOpenText, Brain, Pill } from "lucide-react";
 
 export default async function HomePage() {
   const session = await getServerSession(authOptions);
@@ -14,61 +14,63 @@ export default async function HomePage() {
     prisma.drug.count(),
   ]);
 
+  const cards = [
+    {
+      href: "/drugs",
+      icon: <Pill className="h-7 w-7 text-emerald-400" />,
+      label: "Drugs",
+      value: drugCount,
+      sub: "Browse available medicines",
+    },
+    {
+      href: "/tracker",
+      icon: <BellRing className="h-7 w-7 text-emerald-400" />,
+      label: "Reminders",
+      value: reminderCount,
+      sub: "Your active dosage schedule",
+    },
+    {
+      href: "/prescription",
+      icon: <BookOpenText className="h-7 w-7 text-emerald-400" />,
+      label: "Prescription",
+      value: null,
+      sub: "Send prescription to pharmacist",
+    },
+    {
+      href: "/health-tips",
+      icon: <Brain className="h-7 w-7 text-emerald-400" />,
+      label: "Health Tips",
+      value: null,
+      sub: "Evidence-based medication guidance",
+    },
+  ];
+
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-[#1b345f] bg-[#e5e9f0] p-6 shadow-xl">
-        <h1 className="text-2xl font-bold text-gray-600">
-          Welcome back{session?.user?.name ? `, ${session.user.name}` : ""} 
+      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6">
+        <h1 className="text-2xl font-bold text-white">
+          Welcome back{session?.user?.name ? `, ${session.user.name}` : ""}
         </h1>
         <p className="mt-1 text-sm text-slate-400">Here&apos;s your health overview.</p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-1">
-        <Link
-          href="/drugs"
-          className="rounded-2xl border border-[#1b345f] bg-[#d0d4db] p-6 shadow-md transition
-           hover:border-emerald-500/40 hover:bg-[#0f2347]"
-        >
-          <p className="text-3xl font-bold text-emerald-400">{drugCount}</p>
-          <Image
-                      src="/drug.jpg"
-                      alt="Logo"
-                      width={300}
-                      height={100}
-                      className="object-cover border-r-green-600" />
-          <h2 className="mt-1 font-semibold text-white"> Drugs</h2>
-          <p className="text-sm text-slate-400">Browse available medicines</p>
-        </Link>
-
-        <Link
-          href="/tracker"
-          className="rounded-2xl border border-[#1b345f] bg-[#c1c6cf] p-6 shadow-md transition hover:border-emerald-500/40 hover:bg-[#0f2347]"
-        >
-          <p className="text-3xl font-bold text-emerald-400">{reminderCount}</p>
-          <Image
-                      src="/Riminder.jpg"
-                      alt="Logo"
-                      width={300}
-                      height={100}
-                      className="object-cover border-r-green-600"/>
-          <h2 className="mt-1 font-semibold text-white"> Reminders</h2>
-          <p className="text-sm text-slate-400">Your active dosage schedule</p>
-        </Link>
-
-        <Link
-          href="/prescription"
-          className="rounded-2xl border border-[#1b345f] bg-[#c0c4ce] p-6 shadow-md transition hover:border-emerald-500/40 hover:bg-[#0f2347]"
-        >
-    
-          <Image
-                      src="/Prescriptions.jpg"
-                      alt="Logo"
-                      width={300}
-                      height={100}
-                      className="object-cover border-r-green-600"/>
-          <h2 className="mt-1 font-semibold text-white">Prescription</h2>
-          <p className="text-sm text-slate-400">Send prescription to pharmacist</p>
-        </Link>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {cards.map((c) => (
+          <Link
+            key={c.href}
+            href={c.href}
+            className="group rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6 transition hover:border-emerald-500/40 hover:bg-[#0f2347]"
+          >
+            <div className="flex items-center justify-between">
+              <span>{c.icon}</span>
+              {c.value !== null && (
+                <span className="text-3xl font-bold text-emerald-400">{c.value}</span>
+              )}
+            </div>
+            <h2 className="mt-3 font-semibold text-white">{c.label}</h2>
+            <p className="mt-0.5 text-sm text-slate-400">{c.sub}</p>
+          </Link>
+        ))}
       </div>
     </div>
   );

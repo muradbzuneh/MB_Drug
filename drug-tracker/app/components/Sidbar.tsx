@@ -69,7 +69,7 @@ function NavGroup({
 }) {
   return (
     <>
-      <p className="mt-5 mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-widest text-black-500">
+      <p className="mt-5 mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">
         {label}
       </p>
 
@@ -117,24 +117,24 @@ export default function Sidebar({ open = false, onClose = () => {} }: SidebarPro
   const role = session?.user?.role;
 
   const sidebarContent = (
-    <aside className="flex h-full w-64 flex-col bg-[#eff3fc] px-5 py-7 text-slate-200">
+    <aside className="flex h-full w-72 max-w-[85vw] flex-col bg-[#0b1220] px-5 py-7 text-slate-200 shadow-2xl md:w-64 md:max-w-none md:shadow-none">
       
       {/* Logo */}
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg overflow-hidden bg-emerald-500">
+        <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-emerald-500">
           <Image
             src="/logo.jpg"
             alt="Logo"
             width={40}
             height={40}
-            className="object-cover border-r-green-600"
+            className="object-cover"
             
           />
         </div>
 
         <div>
-          <p className="text-lg font-bold text-emerald-600">DrugTrack</p>
-          <p className="text-[11px] text-slate-800">Health dashboard</p>
+          <p className="text-lg font-bold text-emerald-400">DrugTrack</p>
+          <p className="text-[11px] text-slate-400">Health dashboard</p>
         </div>
       </div>
 
@@ -154,7 +154,7 @@ export default function Sidebar({ open = false, onClose = () => {} }: SidebarPro
       </nav>
 
       {/* Bottom */}
-      <div className="mt-4 border-t border-[#1a2b49] pt-4 space-y-2">
+      <div className="mt-4 space-y-2 border-t border-[#1a2b49] pt-4">
         {session?.user?.name && (
           <p className="truncate px-3 text-xs text-slate-400">
             {session.user.name}

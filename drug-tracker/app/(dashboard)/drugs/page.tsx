@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 type Drug = {
   id: string;
@@ -10,24 +11,50 @@ type Drug = {
   category: string;
   bodyPart: string;
   imageUrl: string | null;
+  estimatedPrice: number | null;
 };
 
+const BODY_PARTS = ["Head", "Chest", "Stomach", "Skin", "Back", "Joints", "Eyes", "Throat", "General"];
+
 export default function DrugsPage() {
+  const { data: session } = useSession();
+  const isPharmacist = session?.user?.role === "PHARMACIST";
+
   const [drugs, setDrugs] = useState<Drug[]>([]);
   const [search, setSearch] = useState("");
   const [bodyPart, setBodyPart] = useState("");
+  const [category, setCategory] = useState("");
+  const [gender, setGender] = useState<"" | "MALE" | "FEMALE">("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchDrugs = async (s = search, bp = bodyPart) => {
+  const panelClass = "rounded-2xl border border-[#1b345f] bg-[#0c1d3f]";
+  const inputClass = "rounded-xl border border-[#1b345f] bg-[#070f24] px-4 py-2.5 text-sm text-slate-200 outline-none placeholder:text-slate-500 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20";
+  const primaryButtonClass = "rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60";
+  const secondaryButtonClass = "rounded-xl border border-[#1b345f] bg-[#070f24] px-5 py-2.5 text-sm font-semibold text-slate-300 transition hover:bg-[#0f2347]";
+
+  const categoryOptions = useMemo(
+    () => Array.from(new Set(drugs.map((d) => d.category))).sort((a, b) => a.localeCompare(b)),
+    [drugs],
+  );
+
+  const fetchDrugs = async (
+    s = search,
+    bp = bodyPart,
+    c = category,
+    g = gender,
+  ) => {
     setLoading(true);
     setError("");
     try {
-      const query = new URLSearchParams({ search: s, bodyPart: bp });
-      const res = await fetch(`/api/drugs?${query.toString()}`);
+      const q = new URLSearchParams();
+      if (s.trim()) q.set("search", s.trim());
+      if (bp) q.set("bodyPart", bp);
+      if (c.trim()) q.set("category", c.trim());
+      if (g) q.set("gender", g);
+      const res = await fetch(`/api/drugs?${q}`);
       if (!res.ok) throw new Error();
-      const data = (await res.json()) as Drug[];
-      setDrugs(data);
+      setDrugs((await res.json()) as Drug[]);
     } catch {
       setError("Failed to load drugs.");
     } finally {
@@ -36,87 +63,152 @@ export default function DrugsPage() {
   };
 
   useEffect(() => {
-    void fetchDrugs("", "");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    let active = true;
+
+    const fetchInitialDrugs = async () => {
+      try {
+        const res = await fetch("/api/drugs");
+        if (!res.ok) throw new Error();
+        const data = (await res.json()) as Drug[];
+        if (active) setDrugs(data);
+      } catch {
+        if (active) setError("Failed to load drugs.");
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+
+    void fetchInitialDrugs();
+    return () => {
+      active = false;
+    };
   }, []);
 
+  const handleReset = () => {
+    setSearch("");
+    setBodyPart("");
+    setCategory("");
+    setGender("");
+    void fetchDrugs("", "", "", "");
+  };
+
   return (
-    <main className="space-y-6">
-      <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-emerald-100 bg-white/90 p-6 shadow-xl backdrop-blur sm:flex-row sm:items-center">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className={`${panelClass} flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between`}>
         <div>
-          <h1 className="text-2xl font-bold text-emerald-900">Drug Library</h1>
-          <p className="text-sm text-emerald-700">Explore medicine details and usage information.</p>
+          <h1 className="text-2xl font-bold text-white">Drug Library</h1>
+          <p className="mt-0.5 text-sm text-slate-400">{drugs.length} medicines available</p>
         </div>
-        <Link
-          href="/drugs/new"
-          className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700"
-        >
-          Add new drug
-        </Link>
+        {isPharmacist && (
+          <Link
+            href="/drugs/new"
+            className="shrink-0 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700"
+          >
+            + Add Drug
+          </Link>
+        )}
       </div>
 
-      <div className="rounded-2xl border border-emerald-100 bg-white/90 p-4 shadow-md">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center">
+      {/* Filters */}
+      <div className={`${panelClass} p-4`}>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           <input
-            placeholder="Search drug..."
+            placeholder="Search by name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+            onKeyDown={(e) => e.key === "Enter" && fetchDrugs()}
+            className={`${inputClass} lg:col-span-2`}
           />
           <select
             value={bodyPart}
             onChange={(e) => setBodyPart(e.target.value)}
-            className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 md:max-w-52"
+            className={inputClass}
           >
             <option value="">All Body Parts</option>
-            <option value="Head">Head</option>
-            <option value="Stomach">Stomach</option>
-            <option value="Chest">Chest</option>
-            <option value="Skin">Skin</option>
+            {BODY_PARTS.map((b) => <option key={b} value={b}>{b}</option>)}
           </select>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className={inputClass}
+          >
+            <option value="">All Categories</option>
+            {categoryOptions.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value as "" | "MALE" | "FEMALE")}
+            className={inputClass}
+          >
+            <option value="">All Genders</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+          </select>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-3">
           <button
             onClick={() => fetchDrugs()}
-            className="rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 md:px-5"
+            className={primaryButtonClass}
           >
-            🔍 Filter
+            Search
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className={secondaryButtonClass}
+          >
+            Reset
           </button>
         </div>
       </div>
 
-      {loading ? <p className="text-sm text-emerald-700">Loading drugs...</p> : null}
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
+      {/* States */}
+      {loading && <p className="text-sm text-slate-400">Loading drugs...</p>}
+      {error && <p className="text-sm text-red-400">{error}</p>}
+      {!loading && !error && drugs.length === 0 && (
+        <p className={`${panelClass} p-6 text-sm text-slate-400`}>
+          No drugs found.
+        </p>
+      )}
 
-      {!loading && !error && drugs.length === 0 ? (
-        <p className="rounded-xl border border-emerald-100 bg-white/80 p-6 text-sm text-emerald-700">No drugs found.</p>
-      ) : null}
-
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {/* Grid */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {drugs.map((drug) => (
-          <div key={drug.id} className="rounded-xl bg-white p-4 shadow transition hover:shadow-lg">
+          <Link
+            key={drug.id}
+            href={`/drugs/${drug.id}`}
+            className={`group ${panelClass} overflow-hidden transition hover:border-emerald-500/40 hover:bg-[#0f2347]`}
+          >
             {drug.imageUrl ? (
               <Image
                 src={drug.imageUrl}
                 alt={drug.name}
                 width={400}
                 height={160}
-                className="h-40 w-full rounded-lg object-cover"
+                className="h-40 w-full object-cover"
               />
             ) : (
-              <div className="h-40 w-full rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-300 text-4xl">
-                💊
+              <div className="flex h-40 w-full items-center justify-center bg-[#070f24]">
+                <Image
+                  src="/logo.jpg"
+                  alt="DrugTrack logo"
+                  width={120}
+                  height={120}
+                  className="h-20 w-20 rounded-xl object-cover opacity-90"
+                />
               </div>
             )}
-            <h2 className="mt-3 text-lg font-semibold">{drug.name}</h2>
-            <p className="text-sm text-gray-500">{drug.category} • {drug.bodyPart}</p>
-            <Link
-              href={`/drugs/${drug.id}`}
-              className="mt-3 inline-block font-medium text-emerald-600"
-            >
-              View Details →
-            </Link>
-          </div>
+            <div className="p-4">
+              <h2 className="font-semibold text-white group-hover:text-emerald-300 transition">{drug.name}</h2>
+              <p className="mt-0.5 text-xs text-slate-500">{drug.category} • {drug.bodyPart}</p>
+              {drug.estimatedPrice !== null && (
+                <p className="mt-1 text-sm font-medium text-emerald-400">${drug.estimatedPrice.toFixed(2)}</p>
+              )}
+            </div>
+          </Link>
         ))}
       </div>
-    </main>
+    </div>
   );
 }

@@ -1,8 +1,10 @@
 import Image from "next/image";
+import { Check, X } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export default async function PrescriptionsPage() {
   const session = await getServerSession(authOptions);
@@ -10,46 +12,45 @@ export default async function PrescriptionsPage() {
   if (session?.user?.role !== "PHARMACIST" && session?.user?.role !== "ADMIN") {
     redirect("/home");
   }
+
   const prescriptions = await prisma.prescription.findMany({
-    include: {
-      user: { select: { name: true, email: true } },
-    },
+    include: { user: { select: { name: true, email: true } } },
     orderBy: { createdAt: "desc" },
   });
 
+  const statusColor: Record<string, string> = {
+    approved: "bg-emerald-500/15 text-emerald-400",
+    rejected: "bg-red-500/15 text-red-400",
+    pending: "bg-yellow-500/15 text-yellow-400",
+  };
+
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-emerald-100 bg-white/90 p-6 shadow-xl backdrop-blur">
-        <h1 className="text-2xl font-bold text-emerald-900">Prescriptions</h1>
-        <p className="mt-1 text-sm text-emerald-700">Review and manage patient prescriptions.</p>
+      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6">
+        <h1 className="text-2xl font-bold text-white">Prescriptions</h1>
+        <p className="mt-1 text-sm text-slate-400">
+          {prescriptions.length} prescription{prescriptions.length !== 1 ? "s" : ""} submitted
+        </p>
       </div>
 
       {prescriptions.length === 0 ? (
-        <p className="rounded-xl border border-emerald-100 bg-white/80 p-6 text-sm text-emerald-700">
+        <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6 text-sm text-slate-400">
           No prescriptions submitted yet.
-        </p>
+        </div>
       ) : (
         <div className="grid gap-4">
           {prescriptions.map((p) => (
-            <div key={p.id} className="rounded-2xl border border-emerald-100 bg-white/90 p-5 shadow-md">
+            <div key={p.id} className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-5 space-y-3">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="font-semibold text-emerald-900">
+                  <p className="font-semibold text-white">
                     {p.user.name ?? p.user.email ?? "Unknown user"}
                   </p>
                   <p className="text-xs text-slate-500">
                     {new Date(p.createdAt).toLocaleString()}
                   </p>
                 </div>
-                <span
-                  className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                    p.status === "approved"
-                      ? "bg-emerald-100 text-emerald-700"
-                      : p.status === "rejected"
-                      ? "bg-red-100 text-red-700"
-                      : "bg-yellow-100 text-yellow-700"
-                  }`}
-                >
+                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusColor[p.status] ?? statusColor.pending}`}>
                   {p.status}
                 </span>
               </div>
@@ -58,52 +59,54 @@ export default async function PrescriptionsPage() {
                 <Image
                   src={p.imageUrl}
                   alt="Prescription"
-                  width={200}
-                  height={200}
-                  className="mt-3 rounded-lg object-cover"
+                  width={240}
+                  height={240}
+                  className="rounded-xl object-cover"
                 />
               )}
 
               {p.note && (
-                <p className="mt-2 text-sm text-slate-700">{p.note}</p>
+                <p className="text-sm text-slate-300 rounded-xl border border-[#1b345f] bg-[#070f24] px-4 py-3">
+                  {p.note}
+                </p>
               )}
 
-              <PrescriptionActions id={p.id} currentStatus={p.status} />
+              {p.status === "pending" && (
+                <form
+                  className="flex gap-2"
+                  action={async (formData: FormData) => {
+                    "use server";
+                    const status = formData.get("status") as string;
+                    await prisma.prescription.update({ where: { id: p.id }, data: { status } });
+                    revalidatePath("/pharmacist/prescriptions");
+                  }}
+                >
+                  <button
+                    name="status"
+                    value="approved"
+                    className="rounded-lg bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700"
+                  >
+                    <span className="inline-flex items-center gap-1">
+                      <Check className="h-3.5 w-3.5" />
+                      Approve
+                    </span>
+                  </button>
+                  <button
+                    name="status"
+                    value="rejected"
+                    className="rounded-lg bg-red-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-red-700"
+                  >
+                    <span className="inline-flex items-center gap-1">
+                      <X className="h-3.5 w-3.5" />
+                      Reject
+                    </span>
+                  </button>
+                </form>
+              )}
             </div>
           ))}
         </div>
       )}
     </div>
-  );
-}
-
-function PrescriptionActions({ id, currentStatus }: { id: string; currentStatus: string }) {
-  if (currentStatus !== "pending") return null;
-
-  return (
-    <form
-      className="mt-3 flex gap-2"
-      action={async (formData: FormData) => {
-        "use server";
-        const status = formData.get("status") as string;
-        const { prisma: db } = await import("@/lib/prisma");
-        await db.prescription.update({ where: { id }, data: { status } });
-      }}
-    >
-      <button
-        name="status"
-        value="approved"
-        className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700"
-      >
-        Approve
-      </button>
-      <button
-        name="status"
-        value="rejected"
-        className="rounded-lg bg-red-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-600"
-      >
-        Reject
-      </button>
-    </form>
   );
 }
