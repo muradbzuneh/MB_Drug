@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="flex min-h-screen flex-1 flex-col">
-        <div className="sticky top-0 z-30 border-b border-[#1b345f] bg-[#07111f]/95 px-4 py-3 backdrop-blur md:hidden">
+        <div className="sticky top-0 z-30 border-b border-[#1b345f] bg-[#f0fdf4] px-4 py-3 backdrop-blur md:hidden">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
@@ -20,12 +20,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             aria-label="Open sidebar"
           >
             <Menu className="h-4 w-4" />
-            Menu
+            Menu      
           </button>
         </div>
 
         <main className="flex-1 p-3 md:p-5">
-          <div className="min-h-[calc(100vh-1.5rem)] rounded-xl border border-[#1b345f] bg-[#0c1d3f] p-4 text-slate-100 md:p-6">
+          <div className="min-h-[calc(100vh-1.5rem)] rounded-xl border border-[#1b345f] bg-[#f0fdf4] p-4 text-slate-100 md:p-6">
             {children}
           </div>
         </main>

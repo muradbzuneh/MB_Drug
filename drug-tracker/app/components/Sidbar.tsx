@@ -86,8 +86,8 @@ function NavGroup({
               onClick={onNavigate}
               className={`flex items-center gap-3 rounded-lg border px-3 py-2 text-sm transition ${
                 isActive
-                  ? "border-emerald-500/30 bg-emerald-500/15 text-emerald-300"
-                  : "border-transparent text-slate-300 hover:border-slate-700 hover:bg-slate-800/50 hover:text-white"
+                  ? "border-emerald-700/30 bg-emerald-500/15 text-emerald-300"
+                  : "border-transparent text-emerald-900 hover:border-slate-900 hover:bg-slate-800/50 hover:text-white"
               }`}
             >
               <Icon
@@ -117,7 +117,7 @@ export default function Sidebar({ open = false, onClose = () => {} }: SidebarPro
   const role = session?.user?.role;
 
   const sidebarContent = (
-    <aside className="flex h-full w-72 max-w-[85vw] flex-col bg-[#0b1220] px-5 py-7 text-slate-200 shadow-2xl md:w-64 md:max-w-none md:shadow-none">
+    <aside className="flex h-full w-72 max-w-[85vw] flex-col bg-[#f0fdf4] px-5 py-7 text-slate-200 shadow-2xl md:w-64 md:max-w-none md:shadow-none">
       
       {/* Logo */}
       <div className="flex items-center gap-3">
@@ -134,7 +134,7 @@ export default function Sidebar({ open = false, onClose = () => {} }: SidebarPro
 
         <div>
           <p className="text-lg font-bold text-emerald-400">DrugTrack</p>
-          <p className="text-[11px] text-slate-400">Health dashboard</p>
+          <p className="text-[11px] text-gray-800">Health dashboard</p>
         </div>
       </div>
 

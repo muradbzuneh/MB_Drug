@@ -4,6 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
+
 export default async function AdminPage() {
   const session = await getServerSession(authOptions);
 
@@ -38,9 +39,9 @@ export default async function AdminPage() {
                 <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Joined</th>
                 <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Change Role</th>
               </tr>
-            </thead>
+            </thead> 
             <tbody>
-              {users.map((u) => (
+              {users.map((u:any   ) => (
                 <tr key={u.id} className="border-b border-[#1b345f] last:border-0">
                   <td className="px-5 py-3 text-slate-200">{u.name ?? "—"}</td>
                   <td className="px-5 py-3 text-slate-400">{u.email}</td>
