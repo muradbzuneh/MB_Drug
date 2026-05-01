@@ -123,7 +123,7 @@ export default function Sidebar({ open = false, onClose = () => {} }: SidebarPro
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-emerald-500">
           <Image
-            src="/logo.jpg"
+            src="/Logo.jpg"
             alt="Logo"
             width={40}
             height={40}
