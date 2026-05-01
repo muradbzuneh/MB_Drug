@@ -34,10 +34,14 @@ export default async function DrugDetail({ params }: Props) {
     );
   }
 
-  const ratedFeedbacks = drug.feedbacks.filter((f:any) => typeof f.rating === "number");
+  type RatedFeedback = (typeof drug.feedbacks)[number] & { rating: number };
+
+  const ratedFeedbacks = drug.feedbacks.filter(
+    (f): f is RatedFeedback => typeof f.rating === "number"
+  );
   const avgRating =
     ratedFeedbacks.length > 0
-      ? (ratedFeedbacks.reduce((s:number, f) => s + (f.rating ?? 0), 0) / ratedFeedbacks.length).toFixed(1)
+      ? (ratedFeedbacks.reduce((s: number, f) => s + f.rating, 0) / ratedFeedbacks.length).toFixed(1)
       : null;
 
   return (
