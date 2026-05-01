@@ -51,14 +51,14 @@ export default function PrescriptionPage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6">
+      <div className="rounded-2xl border border-[#1b345f] bg-emerald-950 p-6">
         <h1 className="text-2xl font-bold text-white">Upload Prescription</h1>
         <p className="mt-1 text-sm text-slate-400">
           Send your prescription image to the pharmacist for review.
         </p>
       </div>
 
-      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6 space-y-4">
+      <div className="rounded-2xl border border-[#1b345f] bg-emerald-800 p-6 space-y-4">
         <div>
           <label className="block text-xs font-medium text-slate-400 mb-1.5">
             Prescription Image <span className="text-red-400">*</span>
@@ -67,7 +67,10 @@ export default function PrescriptionPage() {
             type="file"
             accept="image/*"
             onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-            className="w-full rounded-xl border border-[#1b345f] bg-[#070f24] px-4 py-2.5 text-sm text-slate-400 outline-none file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-600 file:px-3 file:py-1 file:text-xs file:font-semibold file:text-white hover:file:bg-emerald-700"
+            className="w-full rounded-xl border border-[#1b345f] bg-[#070f24]
+             px-4 py-2.5 text-sm text-slate-400 outline-none file:mr-3 file:rounded-lg
+             file:border-0 file:bg-emerald-600 file:px-3 file:py-1 file:text-xs file:font-semibold 
+             file:text-white hover:file:bg-emerald-700 cursor"
           />
         </div>
 

@@ -45,14 +45,14 @@ export default function FeedbackPage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6">
+      <div className="rounded-2xl border border-[#1b345f] bg-emerald-950 p-6">
         <h1 className="text-2xl font-bold text-white">Feedback</h1>
         <p className="mt-1 text-sm text-slate-400">
           Share your thoughts or suggestions about the platform.
         </p>
       </div>
 
-      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6 space-y-4">
+      <div className="rounded-2xl border border-[#1b345f] bg-emerald-800 p-6 space-y-4">
         <div>
           <label className="block text-xs font-medium text-slate-400 mb-1.5">
             Your Feedback <span className="text-red-400">*</span>

@@ -51,15 +51,15 @@ export default function FeedbackForm({ drugId }: { drugId: string }) {
   };
 
   return (
-    <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-5 space-y-4">
+    <div className="rounded-2xl border border-[#1b345f]  bg-emerald-800 p-5 space-y-4">
       <h2 className="inline-flex items-center gap-2 font-semibold text-white">
-        <MessageSquare className="h-4 w-4 text-emerald-400" />
+        <MessageSquare className="h-4 w-4 text-emerald-200" />
         Leave a Review
       </h2>
 
       {/* Star rating */}
       <div className="space-y-1">
-        <label className="text-xs font-medium text-slate-400">Rating (optional)</label>
+        <label className="text-xs font-medium text-slate-200">Rating (optional)</label>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((star) => (
             <button
@@ -76,7 +76,7 @@ export default function FeedbackForm({ drugId }: { drugId: string }) {
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-medium text-slate-400">Comment *</label>
+        <label className="text-xs font-medium text-slate-200">Comment *</label>
         <textarea
           rows={3}
           value={comment}

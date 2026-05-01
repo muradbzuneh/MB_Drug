@@ -46,15 +46,15 @@ export default function ContactPage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6">
+      <div className="rounded-2xl border border-[#1b345f] bg-emerald-950 p-6">
         <h1 className="text-2xl font-bold text-white">Contact</h1>
         <p className="mt-1 text-sm text-slate-400">Reach out to the pharmacist or support team.</p>
       </div>
 
-      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6 space-y-4">
+      <div className="rounded-2xl border border-[#1b345f] bg-emerald-800 p-6 space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">Name *</label>
+            <label className="block text-xs font-medium text-slate-200 mb-1.5">Name *</label>
             <input
               placeholder="Your name"
               value={form.name}
@@ -63,7 +63,7 @@ export default function ContactPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">Email *</label>
+            <label className="block text-xs font-medium text-slate-200 mb-1.5">Email *</label>
             <input
               type="email"
               placeholder="your@email.com"
@@ -75,7 +75,7 @@ export default function ContactPage() {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">Message *</label>
+          <label className="block text-xs font-medium text-slate-200 mb-1.5">Message *</label>
           <textarea
             placeholder="Write your message..."
             rows={5}

@@ -46,7 +46,7 @@ export default function ReminderForm({ drugId }: { drugId: string }) {
   };
 
   return (
-    <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-5 space-y-4">
+    <div className="rounded-2xl border border-[#1b345f]  bg-emerald-800 p-5 space-y-4">
       <h2 className="inline-flex items-center gap-2 font-semibold text-white">
         <BellRing className="h-4 w-4 text-emerald-400" />
         Set Reminder

@@ -47,7 +47,7 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-[#1b345f] bg-[#0f2347] p-6">
+      <div className="rounded-2xl border border-[#1b345f] bg-emerald-900 p-6">
         <h1 className="text-2xl font-bold text-white">
           Welcome back{session?.user?.name ? `, ${session.user.name}` : ""}
         </h1>
@@ -59,7 +59,7 @@ export default async function HomePage() {
           <Link
             key={c.href}
             href={c.href}
-            className="group rounded-2xl border border-[#1b345f] bg-[#0f2345] p-6 transition hover:border-emerald-500/40 hover:bg-[#f0fdf4]"
+            className="group rounded-2xl border border-[#1b345f] bg-emerald-900 p-6 transition hover:border-emerald-100 hover:bg-emerald-700"
           >
             <div className="flex items-center justify-between">
               <span>{c.icon}</span>

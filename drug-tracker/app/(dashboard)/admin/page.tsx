@@ -23,7 +23,7 @@ export default async function AdminPage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6">
+      <div className="rounded-2xl border border-[#1b345f] bg-emerald-900 p-6">
         <h1 className="text-2xl font-bold text-white">Admin Panel</h1>
         <p className="mt-1 text-sm text-slate-400">{users.length} registered users</p>
       </div>

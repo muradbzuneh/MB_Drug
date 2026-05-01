@@ -12,12 +12,10 @@ import {
   FlaskConical,
   Plus,
   Settings,
-  LogOut
 } from "lucide-react";
-
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 
 /* ================= NAV CONFIG ================= */
@@ -117,7 +115,7 @@ export default function Sidebar({ open = false, onClose = () => {} }: SidebarPro
   const role = session?.user?.role;
 
   const sidebarContent = (
-    <aside className="flex h-full w-72 max-w-[85vw] flex-col bg-[#f0fdf4] px-5 py-7 text-slate-200 shadow-2xl md:w-64 md:max-w-none md:shadow-none">
+    <aside className="flex h-full w-72 max-w-[85vw] flex-col bg-white px-5 py-7 text-slate-200 shadow-2xl md:w-64 md:max-w-none md:shadow-none">
       
       {/* Logo */}
       <div className="flex items-center gap-3">
@@ -161,13 +159,7 @@ export default function Sidebar({ open = false, onClose = () => {} }: SidebarPro
           </p>
         )}
 
-        <button
-          onClick={() => signOut({ callbackUrl: "/login" })}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 transition hover:bg-slate-800/50 hover:text-white"
-        >
-          <LogOut className="w-5 h-5 text-slate-400" />
-          <span>Logout</span>
-        </button>
+       
       </div>
     </aside>
   );

@@ -18,7 +18,7 @@ export default async function TrackerPage() {
 
   return (
     <section className="space-y-6">
-      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6">
+      <div className="rounded-2xl border border-[#1b345f] bg-emerald-950 p-6">
         <h1 className="text-2xl font-bold text-white">My Drug Schedule</h1>
         <p className="mt-1 text-sm text-slate-400">
           {usages.length} active reminder{usages.length !== 1 ? "s" : ""}
@@ -26,7 +26,7 @@ export default async function TrackerPage() {
       </div>
 
       {usages.length === 0 ? (
-        <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6 text-sm text-slate-400">
+        <div className="rounded-2xl border border-[#1b345f] bg-emerald-800 p-6 text-sm text-slate-400">
           No reminders yet. Open a drug detail page and add your first reminder.
         </div>
       ) : (

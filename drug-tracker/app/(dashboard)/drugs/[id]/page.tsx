@@ -47,7 +47,7 @@ export default async function DrugDetail({ params }: Props) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4 rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6">
+      <div className="flex items-start justify-between gap-4 rounded-2xl border border-[#1b345f] bg-emerald-900    p-6">
         <div>
           <h1 className="text-2xl font-bold text-white">{drug.name}</h1>
           <p className="mt-1 text-sm text-slate-400">
@@ -60,7 +60,7 @@ export default async function DrugDetail({ params }: Props) {
             </p>
           )}
         </div>
-        <Link href="/drugs" className="shrink-0 rounded-xl border border-[#1b345f] bg-[#070f24] px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:bg-[#0f2347]">
+        <Link href="/drugs" className="shrink-0 rounded-xl border border-[#1b345f] bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:bg-[#0f2347]">
           <span className="inline-flex items-center gap-1">
             <ArrowLeft className="h-3.5 w-3.5" />
             Back
@@ -94,8 +94,8 @@ export default async function DrugDetail({ params }: Props) {
               : "Not specified",
           },
         ].map((item) => (
-          <div key={item.label} className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{item.label}</p>
+          <div key={item.label} className="rounded-2xl border border-[#1b345f] bg-emerald-800 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{item.label}</p>
             <p className="mt-1.5 text-sm text-slate-200">{item.value}</p>
           </div>
         ))}
@@ -108,7 +108,7 @@ export default async function DrugDetail({ params }: Props) {
       {session?.user?.id && <FeedbackForm drugId={drug.id} />}
 
       {/* Feedback list */}
-      <div className="rounded-2xl border border-[#1b345f] bg-[#0c1d3f] p-6 space-y-4">
+      <div className="rounded-2xl border border-[#1b345f]  bg-emerald-950 p-6 space-y-4">
         <h2 className="font-semibold text-white">
           User Reviews ({drug.feedbacks.length})
         </h2>
@@ -117,7 +117,7 @@ export default async function DrugDetail({ params }: Props) {
           <p className="text-sm text-slate-400">No reviews yet. Be the first to leave feedback.</p>
         ) : (
           drug.feedbacks.map((f) => (
-            <div key={f.id} className="rounded-xl border border-[#1b345f] bg-[#070f24] p-4">
+            <div key={f.id} className="rounded-xl border border-[#1b345f]  bg-emerald-800 p-4">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-slate-200">{f.user.name ?? "Anonymous"}</p>
                 {f.rating && (
