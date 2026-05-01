@@ -28,7 +28,7 @@ export default function DrugsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const panelClass = "rounded-2xl border border-[#1b345f] bg-[#0c1d3f]";
+  const panelClass = "rounded-2xl border border-[#1b345f] bg-emerald-950";
   const inputClass = "rounded-xl border border-[#1b345f] bg-[#070f24] px-4 py-2.5 text-sm text-slate-200 outline-none placeholder:text-slate-500 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20";
   const primaryButtonClass = "rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60";
   const secondaryButtonClass = "rounded-xl border border-[#1b345f] bg-[#070f24] px-5 py-2.5 text-sm font-semibold text-slate-300 transition hover:bg-[#0f2347]";

@@ -67,7 +67,7 @@ function NavGroup({
 }) {
   return (
     <>
-      <p className="mt-5 mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+      <p className="mt-5 mb-1.5 px-3 text-[12px] font-semibold uppercase tracking-widest text-slate-600">
         {label}
       </p>
 
@@ -90,7 +90,7 @@ function NavGroup({
             >
               <Icon
                 className={`w-5 h-5 shrink-0 ${
-                  isActive ? "text-emerald-400" : "text-slate-400"
+                  isActive ? "text-emerald-600" : "text-slate-900"
                 }`}
               />
               <span>{name}</span>
