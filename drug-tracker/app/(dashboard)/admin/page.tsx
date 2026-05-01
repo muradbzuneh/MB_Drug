@@ -41,7 +41,7 @@ export default async function AdminPage() {
               </tr>
             </thead> 
             <tbody>
-              {users.map((u:any   ) => (
+              {users.map((u:any) => (
                 <tr key={u.id} className="border-b border-[#1b345f] last:border-0">
                   <td className="px-5 py-3 text-slate-200">{u.name ?? "—"}</td>
                   <td className="px-5 py-3 text-slate-400">{u.email}</td>
