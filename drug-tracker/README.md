@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DrugTrack
 
-## Getting Started
+Medication tracking, reminders, and prescription management.
 
-First, run the development server:
+## Stack
+
+- Next.js 16 (App Router)
+- NextAuth.js v4 (JWT, Credentials)
+- Prisma 5 + Neon PostgreSQL
+- Tailwind CSS v4
+- Cloudinary (image uploads)
+
+## Local Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Set these in `.env` locally and in Vercel project settings for deployment:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | Neon pooled connection string |
+| `DIRECT_URL` | Neon direct connection string (for migrations) |
+| `NEXTAUTH_SECRET` | Random secret string (use `openssl rand -base64 32`) |
+| `NEXTAUTH_URL` | Full URL of your app (`https://your-app.vercel.app` in production) |
+| `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` | Your Cloudinary cloud name |
+| `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` | Your Cloudinary unsigned upload preset |
 
-## Learn More
+## Database
 
-To learn more about Next.js, take a look at the following resources:
+Run migrations against Neon:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm prisma migrate deploy
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Or push schema directly (dev only):
 
-## Deploy on Vercel
+```bash
+pnpm prisma db push
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy to Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Push to GitHub
+2. Import repo in Vercel
+3. Add all environment variables above in Vercel project settings
+4. Deploy — `prisma generate && next build` runs automatically

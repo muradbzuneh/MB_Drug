@@ -12,11 +12,7 @@ const nextConfig: NextConfig = {
         hostname: "**.cloudinary.com",
       },
     ],
-    // Allow data URLs (base64) for local image previews
-    dangerouslyAllowSVG: true,
   },
-  // Reduce unnecessary re-renders in dev
-  reactStrictMode: false,
 };
 
 export default nextConfig;
